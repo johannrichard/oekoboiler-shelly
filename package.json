@@ -1,0 +1,26 @@
+{
+  "name": "oekoboiler-shelly",
+  "description": "Emulate a Shelly 1 with temperature data from Oekoboiler",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "author": "johannrichard",
+  "license": "MIT",
+  "repository": "https://github.com/johannrichard/oekoboiler-shelly",
+  "packageManager": "yarn@3.3.1",
+  "dependencies": {
+    "fake-shelly": "https://github.com/johannrichard/fake-shelly",
+    "oekoboiler-api": "https://github.com/johannrichard/oekoboiler-api",
+    "restify": "^10.0.0"
+  },
+  "types": "modules.d.ts",
+  "scripts": {
+    "build": "yarn rimraf ./dist && tsc",
+    "op-start": "yarn build && op run --env-file=../.env -- node dist/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.9.4"
+  }
+}
