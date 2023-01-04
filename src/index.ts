@@ -1,19 +1,20 @@
 /**
  * Little script to merge (or fake) an Heatpump Boiler as a Shelly 1
  * with temperature sensors
- * 
+ *
  * To use it, define the following three environment variables:
- * 
+ *
  * OB_USER_MAIL: your Oekoboiler E-Mail
  * OB_USER_PASSWORD: your Oekoboiler Password
- * OB_DSN: The DSN of your Oekoboiler 
- * 
- * If you're unsure about the DSN, have a look at `oekoboiler-api` 
+ * OB_DSN: The DSN of your Oekoboiler
+ *
+ * If you're unsure about the DSN, have a look at `oekoboiler-api`
  * and the example provided therein to get all your Boiler's DSNs
  */
 import { CoapServer, HttpServer } from 'fake-shelly';
 import { Shelly1 } from 'fake-shelly/devices';
 import { OekoboilerApi, OekoboilerDevice } from 'oekoboiler-api';
+import 'dotenv/config';
 
 const mac = '00404F74DE83';
 const interval = 30;
@@ -24,6 +25,7 @@ class OekboilerShelly extends Shelly1 {
     process.env.OB_USER_PASSWORD || '',
   );
   private boiler: OekoboilerDevice | undefined = undefined;
+  public dsn: string = process.env.OB_DSN || '';
 
   constructor(id: string) {
     super(id);
@@ -43,7 +45,7 @@ class OekboilerShelly extends Shelly1 {
   }
 
   private async getCurrentTemperature() {
-    await this.api.getBoiler(process.env.OB_DSN || '').then((boiler) => {
+    await this.api.getBoiler(this.dsn).then((boiler) => {
       this.boiler = boiler;
       this.temperature = this.boiler.currentWaterTemp;
     });
@@ -97,18 +99,19 @@ class OekboilerShelly extends Shelly1 {
   }
 }
 
-let device;
+let boiler;
 
 try {
-  device = new OekboilerShelly(mac);
+  boiler = new OekboilerShelly(mac);
   console.log('------------------------------');
-  console.log('Type:', device.type);
-  console.log('ID:', device.id);
+  console.log('Type:', boiler.type);
+  console.log('ID:  ', boiler.id);
+  console.log('DSN: ', boiler.dsn);
   console.log('------------------------------');
   console.log('');
 
-  const coapServer = new CoapServer(device);
-  const httpServer = new HttpServer(device);
+  const coapServer = new CoapServer(boiler);
+  const httpServer = new HttpServer(boiler);
 
   coapServer
     .start()
