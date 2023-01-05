@@ -1988,15 +1988,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oekoboiler-api@portal:/Users/jr/build/oekoboiler-api/main::locator=oekoboiler-shelly%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "oekoboiler-api@portal:/Users/jr/build/oekoboiler-api/main::locator=oekoboiler-shelly%40workspace%3A."
+"oekoboiler-api@npm:beta":
+  version: 1.0.0-beta.2
+  resolution: "oekoboiler-api@npm:1.0.0-beta.2"
   dependencies:
     axios: ^1.1.3
-    dotenv: ^16.0.3
     luxon: ^3.1.0
+  checksum: 353492cdf6edcc0c0e3a6ce7b164bc9667f35a02c5d7f10afd34978f06dd29f268127a8eaf093813be0f09adf360076875af0ecf51cd768368178115b8fa4944
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "oekoboiler-shelly@workspace:.":
   version: 0.0.0-use.local
@@ -2007,7 +2007,7 @@ __metadata:
     axios: ^1.2.2
     dotenv: ^16.0.3
     fake-shelly: "https://github.com/johannrichard/fake-shelly"
-    oekoboiler-api: "https://github.com/johannrichard/oekoboiler-api"
+    oekoboiler-api: beta
     restify: ^10.0.0
     rimraf: ^3.0.2
     typescript: ^4.9.4
