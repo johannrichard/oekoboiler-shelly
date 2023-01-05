@@ -11,45 +11,68 @@
  * If you're unsure about the DSN, have a look at `oekoboiler-api`
  * and the example provided therein to get all your Boiler's DSNs
  */
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { CoapServer, HttpServer } from 'fake-shelly';
-import { Shelly1 } from 'fake-shelly/devices';
+import { Shelly1PM } from 'fake-shelly/devices';
 import { OekoboilerApi, OekoboilerDevice } from 'oekoboiler-api';
 import 'dotenv/config';
 
 const mac = '00404F74DE83';
 const interval = 30;
 
-class OekboilerShelly extends Shelly1 {
+class OekboilerShelly extends Shelly1PM {
+  public dsn: string = process.env.OB_DSN || '';
+  public myStromDevice: string = process.env.OB_MYSTROM_SWITCH || '';
+
   private api = new OekoboilerApi(
     process.env.OB_USER_MAIL || '',
     process.env.OB_USER_PASSWORD || '',
   );
   private boiler: OekoboilerDevice | undefined = undefined;
-  public dsn: string = process.env.OB_DSN || '';
 
   constructor(id: string) {
     super(id);
 
+    // Remove event emitter
+    this.removeListener('change:relay0');
+
+    // Define Temperature property
     this._defineProperty('temperature', 0, null, Number);
-    this.getCurrentTemperature().then(() => {
-      console.log(this.boiler);
+
+    // Update consumption and temperature from source devices
+    this.updateCurrentConsumption();
+    this.updateCurrentTemperature().then(() => {
       // Set an interval to update the temperature
       setInterval(() => {
-        this.getCurrentTemperature().then(() => {
-          if (this.boiler) {
-            console.log(`Current temperature: ${this.boiler.currentWaterTemp}`);
-          }
-        });
+        // Device will emit changed values
+        this.updateCurrentTemperature();
+        this.updateCurrentConsumption();
       }, interval * 1000);
     });
   }
 
-  private async getCurrentTemperature() {
+  private async updateCurrentTemperature() {
     await this.api.getBoiler(this.dsn).then((boiler) => {
       this.boiler = boiler;
       this.temperature = this.boiler.currentWaterTemp;
     });
   }
+
+  private async updateCurrentConsumption() {
+    axios
+      .get(
+        // MyStrom report endpoint
+        `${this.myStromDevice}/report`,
+      )
+      .then((result) => {
+        const data = result.data!;
+        this.relay0 = data!.relay;
+        if (data!.power && data!.relay == true) {
+          this.powerMeter0 = data.power;
+        }
+      });
+  }
+
   protected _getHttpSettings() {
     return {
       sensors: {
@@ -57,6 +80,7 @@ class OekboilerShelly extends Shelly1 {
         temperature_unit: 'C',
       },
       relays: [this._getRelay0HttpSettings()],
+      meters: [this._getPowerMeter0HttpSettings()],
       ext_sensors: {
         temperature_unit: 'C',
       },
@@ -75,9 +99,10 @@ class OekboilerShelly extends Shelly1 {
     };
   }
 
-  _getHttpStatus() {
+  protected _getHttpStatus() {
     return {
       relays: [this._getRelay0HttpStatus()],
+      meters: [this._getPowerMeter0HttpStatus()],
       tmp: {
         value: this.temperature,
         units: 'C',
@@ -104,9 +129,10 @@ let boiler;
 try {
   boiler = new OekboilerShelly(mac);
   console.log('------------------------------');
-  console.log('Type:', boiler.type);
-  console.log('ID:  ', boiler.id);
-  console.log('DSN: ', boiler.dsn);
+  console.log('Shelly:  ', boiler.type);
+  console.log('ID:      ', boiler.id);
+  console.log('Boiler:  ', boiler.dsn);
+  console.log('Switch:  ', boiler.myStromDevice);
   console.log('------------------------------');
   console.log('');
 
