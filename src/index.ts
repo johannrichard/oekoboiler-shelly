@@ -22,7 +22,8 @@ const interval = 30;
 
 class OekboilerShelly extends Shelly1PM {
   public dsn: string = process.env.OB_DSN || '';
-  public myStromDevice: string = process.env.OB_MYSTROM_SWITCH || '';
+  public upstreamPowerMeter: string = process.env.OB_MYSTROM_METER || '';
+  public upstreamPVSwitch: string = process.env.OB_SHELLY_SWITCH || '';
 
   private api = new OekoboilerApi(
     process.env.OB_USER_MAIL || '',
@@ -33,20 +34,35 @@ class OekboilerShelly extends Shelly1PM {
   constructor(id: string) {
     super(id);
 
+    this.macAddress = id;
     // Remove event emitter
     this.removeListener('change:relay0');
+
+    // Add new listener
+    this.on('change:relay0', (newValue) => {
+      console.log('New Value');
+      // Must trickle this down, i.e. set relay of upstream Shelly
+      axios.get(
+        `${this.upstreamPVSwitch}/relay/0?turn=${newValue ? 'on' : 'off'}`,
+      );
+    });
 
     // Define Temperature property
     this._defineProperty('temperature', 0, null, Number);
 
     // Update consumption and temperature from source devices
-    this.updateCurrentConsumption();
+    this.updateCurrentConsumption().then(() => {
+      setInterval(() => {
+        // Device will emit changed values
+        this.updateCurrentConsumption();
+      }, (interval / 3) * 1000);
+    });
+
     this.updateCurrentTemperature().then(() => {
       // Set an interval to update the temperature
       setInterval(() => {
         // Device will emit changed values
         this.updateCurrentTemperature();
-        this.updateCurrentConsumption();
       }, interval * 1000);
     });
   }
@@ -59,18 +75,13 @@ class OekboilerShelly extends Shelly1PM {
   }
 
   private async updateCurrentConsumption() {
-    axios
-      .get(
-        // MyStrom report endpoint
-        `${this.myStromDevice}/report`,
-      )
-      .then((result) => {
-        const data = result.data!;
-        this.relay0 = data!.relay;
-        if (data!.power && data!.relay == true) {
-          this.powerMeter0 = data.power;
-        }
-      });
+    axios.get(`${this.upstreamPowerMeter}/report`).then((result) => {
+      const data = result.data!;
+      this.relay0 = data!.relay;
+      if (data!.power && data!.relay == true) {
+        this.powerMeter0 = data.power;
+      }
+    });
   }
 
   protected _getHttpSettings() {
@@ -129,10 +140,11 @@ let boiler;
 try {
   boiler = new OekboilerShelly(mac);
   console.log('------------------------------');
-  console.log('Shelly:  ', boiler.type);
-  console.log('ID:      ', boiler.id);
-  console.log('Boiler:  ', boiler.dsn);
-  console.log('Switch:  ', boiler.myStromDevice);
+  console.log('Shelly:     ', boiler.type);
+  console.log('ID:         ', boiler.id);
+  console.log('Boiler:     ', boiler.dsn);
+  console.log('PowerMeter: ', boiler.upstreamPowerMeter);
+  console.log('PV Switch:  ', boiler.upstreamPVSwitch);
   console.log('------------------------------');
   console.log('');
 
