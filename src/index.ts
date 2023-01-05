@@ -40,7 +40,6 @@ class OekboilerShelly extends Shelly1PM {
 
     // Add new listener
     this.on('change:relay0', (newValue) => {
-      console.log('New Value');
       // Must trickle this down, i.e. set relay of upstream Shelly
       axios.get(
         `${this.upstreamPVSwitch}/relay/0?turn=${newValue ? 'on' : 'off'}`,
@@ -139,6 +138,13 @@ let boiler;
 
 try {
   boiler = new OekboilerShelly(mac);
+  console.log(
+    `▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+██░▄▄▄░█░▄▄█░█▀█▀▄▄▀█░▄▄▀█▀▄▄▀██▄██░██░▄▄█░▄▄▀███░█░████░▄▄▄░█░████░▄▄█░██░██░██░██
+██░███░█░▄▄█░▄▀█░██░█░▄▄▀█░██░██░▄█░██░▄▄█░▀▀▄███▀▄▀████▄▄▄▀▀█░▄▄░█░▄▄█░██░██░▀▀░██
+██░▀▀▀░█▄▄▄█▄█▄██▄▄██▄▄▄▄██▄▄██▄▄▄█▄▄█▄▄▄█▄█▄▄███▄█▄████░▀▀▀░█▄██▄█▄▄▄█▄▄█▄▄█▀▀▀▄██
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀`,
+  );
   console.log('------------------------------');
   console.log('Shelly:     ', boiler.type);
   console.log('ID:         ', boiler.id);
