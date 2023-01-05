@@ -1,0 +1,17 @@
+# Systemd Unit file for oekoeboiler-shelly service
+# Replace the folder with your specific install
+[Unit]
+Description=Oekoboiler Shelly Service
+
+[Service]
+ExecStart=yarn node /opt/oekoboiler-shelly/dist/index.js
+Restart=always
+User=root
+# Load Crendentials securely from "oekoboiler-shelly"
+# This requires an up-to-date systemd with systemd-creds
+# The credentials file you generate must be created 
+# with the same name used here, i.e. `oekoboiler-shelly`
+LoadCredentialEncrypted=oekoboiler-shelly
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=DOTENV_CONFIG_PATH=%d/oekoboiler-shelly
+WorkingDirectory=/opt/oekoboiler-shelly
