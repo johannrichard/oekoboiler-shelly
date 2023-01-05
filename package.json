@@ -12,7 +12,7 @@
     "axios": "^1.2.2",
     "dotenv": "^16.0.3",
     "fake-shelly": "https://github.com/johannrichard/fake-shelly",
-    "oekoboiler-api": "https://github.com/johannrichard/oekoboiler-api",
+    "oekoboiler-api": "beta",
     "restify": "^10.0.0"
   },
   "types": "modules.d.ts",
