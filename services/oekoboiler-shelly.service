@@ -4,7 +4,11 @@
 Description=Oekoboiler Shelly Service
 
 [Service]
-ExecStart=yarn node bin/oekoboiler-shelly
+# Make sure to update your Working Directory
+# one way: with an override: 
+# run `systemctl edit oekoboiler-shelly` 
+WorkingDirectory=
+ExecStart=bin/oekoboiler-shelly
 Restart=always
 User=root
 # Load Crendentials securely from "oekoboiler-shelly"
@@ -15,7 +19,5 @@ LoadCredentialEncrypted=oekoboiler-shelly
 Environment=PATH=/usr/bin:/usr/local/bin
 Environment=DOTENV_CONFIG_PATH=%d/oekoboiler-shelly
 
-# Make sure to update your Working Directory
-# one way: with an override: 
-# run `systemctl edit oekoboiler-shelly` 
-WorkingDirectory=
+[Install]
+WantedBy=multi-user.target
