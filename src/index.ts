@@ -71,8 +71,8 @@ class OekboilerShelly extends Shelly1PM {
       // Set an interval to update the relay status
       setInterval(() => {
         // Device will emit changed values
-        this.updateCurrentTemperature();
-      }, interval * 1000);
+        this.updateCurrentPVStatus();
+      }, (interval / 3) * 1000);
     });
   }
 
@@ -88,7 +88,7 @@ class OekboilerShelly extends Shelly1PM {
   private async updateCurrentConsumption() {
     axios.get(`${this.upstreamPowerMeter}/report`).then((result) => {
       const data = result.data!;
-      if (data!.power && data!.relay == true) {
+      if (data!.power) {
         this.powerMeter0 = data.power;
       }
     });
@@ -98,9 +98,7 @@ class OekboilerShelly extends Shelly1PM {
   private async updateCurrentPVStatus() {
     axios.get(`${this.upstreamPVSwitch}/relay/0`).then((result) => {
       const data = result.data!;
-      if (data!.ison) {
-        this.relay0 = data.ison;
-      }
+      this.relay0 = data.ison;
     });
   }
 
