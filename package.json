@@ -2,8 +2,8 @@
   "name": "oekoboiler-shelly",
   "description": "Emulate a Shelly 1 with temperature data from Oekoboiler",
   "version": "0.0.0",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "bin/oekoboiler-shelly",
+  "types": "dist/index.d.ts",
   "author": "johannrichard",
   "license": "MIT",
   "repository": "https://github.com/johannrichard/oekoboiler-shelly",
@@ -15,14 +15,13 @@
     "oekoboiler-api": "beta",
     "restify": "^10.0.0"
   },
-  "types": "modules.d.ts",
   "scripts": {
     "lint": "eslint src/**.ts",
     "postinstall": "yarn husky install",
     "prepack": "yarn pinst --disable",
     "postpack": "yarn pinst --enable",
     "build": "yarn rimraf ./dist && tsc",
-    "op-start": "yarn build && op run --env-file=../.env -- node dist/index.js"
+    "op-start": "yarn build && op run --env-file=../.env -- node bin/oekoboiler-shelly"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.0",

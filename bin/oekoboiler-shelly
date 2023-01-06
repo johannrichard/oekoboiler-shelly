@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+// runs oekoboiler - shelly
+require('../dist/index.js');
