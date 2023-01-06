@@ -42,14 +42,16 @@ class OekboilerShelly extends Shelly1PM {
     this.on('change:relay0', (newValue) => {
       // Must trickle this down, i.e. set relay of upstream Shelly
       axios.get(
-        `${this.upstreamPVSwitch}/relay/0?turn=${newValue ? 'on' : 'off'}`,
+        `${this.upstreamPVSwitch}/relay/0?turn=${
+          newValue === true ? 'on' : 'off'
+        }`,
       );
     });
 
     // Define Temperature property
     this._defineProperty('temperature', 0, null, Number);
 
-    // Update consumption and temperature from source devices
+    // Update consumption, temperature and pv switch from source devices
     this.updateCurrentConsumption().then(() => {
       setInterval(() => {
         // Device will emit changed values
@@ -64,8 +66,17 @@ class OekboilerShelly extends Shelly1PM {
         this.updateCurrentTemperature();
       }, interval * 1000);
     });
+
+    this.updateCurrentPVStatus().then(() => {
+      // Set an interval to update the relay status
+      setInterval(() => {
+        // Device will emit changed values
+        this.updateCurrentTemperature();
+      }, interval * 1000);
+    });
   }
 
+  // fetch current temperature from Oekboiler API
   private async updateCurrentTemperature() {
     await this.api.getBoiler(this.dsn).then((boiler) => {
       this.boiler = boiler;
@@ -73,12 +84,22 @@ class OekboilerShelly extends Shelly1PM {
     });
   }
 
+  // fetch current power consumption from Power Meter
   private async updateCurrentConsumption() {
     axios.get(`${this.upstreamPowerMeter}/report`).then((result) => {
       const data = result.data!;
-      this.relay0 = data!.relay;
       if (data!.power && data!.relay == true) {
         this.powerMeter0 = data.power;
+      }
+    });
+  }
+
+  // fetch current relay status from PV relay
+  private async updateCurrentPVStatus() {
+    axios.get(`${this.upstreamPVSwitch}/relay/0`).then((result) => {
+      const data = result.data!;
+      if (data!.ison) {
+        this.relay0 = data.ison;
       }
     });
   }
@@ -94,18 +115,7 @@ class OekboilerShelly extends Shelly1PM {
       ext_sensors: {
         temperature_unit: 'C',
       },
-      ext_temperature: {
-        0: {
-          overtemp_threshold_tC: 25.6,
-          overtemp_threshold_tF: 78.1,
-          undertemp_threshold_tC: 18.4,
-          undertemp_threshold_tF: 65.1,
-          overtemp_act: 'disabled',
-          undertemp_act: 'disabled',
-          offset_tC: 0,
-          offset_tF: 0,
-        },
-      },
+      ext_temperature: {},
     };
   }
 
@@ -113,13 +123,7 @@ class OekboilerShelly extends Shelly1PM {
     return {
       relays: [this._getRelay0HttpStatus()],
       meters: [this._getPowerMeter0HttpStatus()],
-      tmp: {
-        value: this.temperature,
-        units: 'C',
-        tC: this.temperature,
-        tF: (this.temperature * 9) / 5 + 32,
-        is_valid: true,
-      },
+      tmp: {},
       ext_sensors: {
         temperature_unit: 'C',
       },
@@ -174,6 +178,6 @@ try {
     .catch((error) => {
       console.error('Failed to start HTTP server:', error);
     });
-} catch (e: unknown) {
+} catch (e) {
   if (e instanceof Error) console.error('Failed to create device:', e.message);
 }
