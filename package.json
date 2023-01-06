@@ -17,13 +17,26 @@
   },
   "types": "modules.d.ts",
   "scripts": {
+    "lint": "eslint src/**.ts",
+    "postinstall": "yarn husky install",
+    "prepack": "yarn pinst --disable",
+    "postpack": "yarn pinst --enable",
     "build": "yarn rimraf ./dist && tsc",
     "op-start": "yarn build && op run --env-file=../.env -- node dist/index.js"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.4.0",
+    "@commitlint/config-conventional": "^17.4.0",
     "@types/node": "^18.11.18",
     "@yarnpkg/sdks": "^3.0.0-rc.34",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
     "rimraf": "^3.0.2",
     "typescript": "^4.9.4"
+  },
+  "lint-staged": {
+    "**/*.+(js|jsx|css|less|scss|ts|tsx|md)": [
+      "prettier --write"
+    ]
   }
 }

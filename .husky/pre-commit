@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# All commits must pass lint-staged and the build process
+yarn run lint-staged && yarn run build
