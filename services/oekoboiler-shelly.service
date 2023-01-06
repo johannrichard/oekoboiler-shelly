@@ -1,20 +1,29 @@
 # Systemd Unit file for oekoeboiler-shelly service
-# Replace the folder with your specific install
+# 
+# Make sure to update your Working Directory
+# one way to achieve this: with an override: 
+# run `systemctl edit oekoboiler-shelly` 
+# in the editor, add the following (the 
+# [Service] section is important!)
+# 
+# [Service]
+# WorkingDirectory=<your working dir>
+
 [Unit]
 Description=Oekoboiler Shelly Service
 
 [Service]
-# Make sure to update your Working Directory
-# one way: with an override: 
-# run `systemctl edit oekoboiler-shelly` 
-WorkingDirectory=
-ExecStart=bin/oekoboiler-shelly
+WorkingDirectory=/opt/oekoboiler-shelly
+
+ExecStart=yarn node bin/oekoboiler-shelly
 Restart=always
 User=root
 # Load Crendentials securely from "oekoboiler-shelly"
-# This requires an up-to-date systemd with systemd-creds
+# This requires an up-to-date systemd with systemd-creds,
+# see https://systemd.io/CREDENTIALS/ 
 # The credentials file you generate must be created 
 # with the same name used here, i.e. `oekoboiler-shelly`
+# systemd-creds encrypt infile oekoboiler-shelly
 LoadCredentialEncrypted=oekoboiler-shelly
 Environment=PATH=/usr/bin:/usr/local/bin
 Environment=DOTENV_CONFIG_PATH=%d/oekoboiler-shelly
