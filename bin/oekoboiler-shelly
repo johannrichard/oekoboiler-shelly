@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env yarn node
 
 // runs oekoboiler - shelly
 require('../dist/index.js');
