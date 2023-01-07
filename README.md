@@ -95,7 +95,7 @@ Oekoboiler's have a phenomenal COP of over 4.2. In comparison to our old pure el
 
 ## Disclaimer
 
-I am in no way affiliated to Oekoboiler, MyStrom, Shelly, or Solar Manager. This project was bron out of necessity:
+I am in no way affiliated to Oekoboiler, MyStrom, Shelly, or Solar Manager. This project was born out of necessity:
 
 - I knew Solar Manager could work with temperature, consumption, and the "PV function",
 - I had already used both a Shelly and a MyStrom device to partially use their information to control the Oekoboiler's heating cycle when excess solar power was available, and
