@@ -7,6 +7,8 @@
  * OB_USER_MAIL: your Oekoboiler E-Mail
  * OB_USER_PASSWORD: your Oekoboiler Password
  * OB_DSN: The DSN of your Oekoboiler
+ * OB_MYSTROM_METER: The MyStrom Switch used as a power meter for the Oekoboiler
+ * OB_SHELLY_SWITCH: The Shelly 1 used to control the Oekoboiler's PV function
  *
  * If you're unsure about the DSN, have a look at `oekoboiler-api`
  * and the example provided therein to get all your Boiler's DSNs
