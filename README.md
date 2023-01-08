@@ -76,8 +76,8 @@ To use it, install the dependencies (running `yarn` will do, as does `npm` if yo
 You can do so:
 
 - by putting them in a `.env` file whill will be loaded by [`dotenv`](https://github.com/motdotla/dotenv), including its variations on how to get to the file,
-- by using the [`systemd`](https://systemd.io/) service, and, if your `systemd` is new enough (or backported), us it’s [encryption capability](https://systemd.io/CREDENTIALS/),
-- or simply by defining them in the shell environment, optionally using something like [1Password CLI](https://developer.1password.com/docs/cli/) to safely pass them to the script.
+- by using the [`systemd`](https://systemd.io/) service (with the provided [`.service`file](https://github.com/johannrichard/oekoboiler-shelly/blob/master/services/oekoboiler-shelly.service)), and, if your `systemd` is recent enough (or [backported](https://packages.debian.org/bullseye-backports/systemd)), use it’s [encryption capability](https://systemd.io/CREDENTIALS/),
+- or simply by defining them in the shell environment, optionally using something like [1Password CLI](https://developer.1password.com/docs/cli/) to securely pass them to the script.
 
 Once you’re set-up, just run the binary from the working directory to test it:
 
@@ -95,14 +95,15 @@ Oekoboiler’s have a phenomenal COP of over 4.2. In comparison to our old pure 
 
 ## Disclaimer
 
-I am in no way affiliated to Oekoboiler, MyStrom, Shelly, or Solar Manager. This project was born out of necessity:
+I am not affiliated to Oekoboiler, MyStrom, Shelly, or Solar Manager. This project was born out of necessity:
 
+- Our PV plant was not yet optimized for self consumption of PV power,
 - I knew Solar Manager could work with temperature, consumption, and the “PV function”,
 - I had already used both a Shelly and a MyStrom device to partially use their information to control the Oekoboiler’s heating cycle when excess solar power was available, and
-- since the Oekoboiler uses a cloud service with a reasonably simple and publicly documented API, I could put together a small, prototype API client to read out the current temperature.
+- since the Oekoboiler uses a cloud service with a reasonably simple and [publicly documented API](https://developer.aylanetworks.com/apibrowser), I could put together a small, prototype API client to read out the current temperature.
 
 It stands on the shoulders of others, notably [alexryd/fake-shelly](alexryd/fake-shelly), [NorthernMan54/homebridge-connex](https://github.com/NorthernMan54/homebridge-connex) as well as [shawnjung/homebridge-plugin-dimplex-connex](https://github.com/shawnjung/homebridge-plugin-dimplex-connex) who all served as inspiration or provided critical piecces needed to stitch this together.
 
 You use this software at your own risk.
 
-[^1]: text written with the support of [ChatGPT](https://chat.openai.com).
+[^1]: text written with the support of [ChatGPT](https://chat.openai.com). :space_invader: :robot:
