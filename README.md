@@ -85,7 +85,7 @@ Once you’re set-up, just run the binary from the working directory to test it:
 bin/oekoboiler-shelly
 ```
 
-## What is a heat-pump booiler, anyway?[^1]
+## What is a heat-pump boiler, anyway?[^1]
 
 A heat pump boiler is a type of boiler that uses a heat pump to generate heating energy. Instead of using a fossil fuel (such as gas or oil) to produce heat, a heat pump boiler uses electricity to power a heat pump. The heat pump then transfers heat from the surrounding air or ground to the water, which is used to heat the home. In this way, a heat pump boiler can be an energy-efficient alternative to a traditional boiler, as it can reduce the amount of fossil fuels that need to be burned in order to generate heat.
 
