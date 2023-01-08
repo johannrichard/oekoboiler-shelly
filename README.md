@@ -98,7 +98,7 @@ Oekoboiler’s have a phenomenal COP of over 4.2. In comparison to our old pure 
 I am not affiliated to Oekoboiler, MyStrom, Shelly, or Solar Manager. This project was born out of necessity:
 
 - Our PV plant was not yet optimized for self consumption of PV power,
-- I knew Solar Manager could work with temperature, consumption, and the “PV function”,
+- I knew Solar Manager could work with [temperature, consumption, and the “PV function”](https://www.solarmanager.ch/anwendungen/waermepumpe/) of a heat-pump boiler ,
 - I had already used both a Shelly and a MyStrom device to partially use their information to control the Oekoboiler’s heating cycle when excess solar power was available, and
 - since the Oekoboiler uses a cloud service with a reasonably simple and [publicly documented API](https://developer.aylanetworks.com/apibrowser), I could put together a small, prototype API client to read out the current temperature.
 
