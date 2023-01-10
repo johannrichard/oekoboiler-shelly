@@ -6,11 +6,17 @@ Oekoboiler Shelly is a virtual device that emulates a Shelly 1 device, but with 
 
 Oekoboiler Shelly also retrieves data about current power consumption from a [Power Meter device](https://mystrom.ch) and the current relay status from the PV relay device it controls.
 
-This information can be used by the Solar Manager by configuring three different Shelly 1/PM devices for:
+This information can be used by the Solar Manager by configuring one or different Shelly 1/PM devices. For example, any combination of devices using Shelly 1/PM relay devices for
 
-- optimised heat pump control (`relay/0`),
+- optimised heat pump control via the ”PV-Ready” or "SG-Ready" function (`relay/0`),
 - power consumption (`meters/0`), and
 - temperature readout (`ext_temperature`).
+
+A typical use case might be hot water production via the Solar Manager's **_Hot water_** / **_1 Step ON / OFF_** device using a **_Shelly 1PM_** as ”_Device (Relay)_”.
+
+This will then allow you to measure and optimize your Oekoboiler's enerygy use and be displayed as follows, with the current water temperature, current and overall power consumption for the past 24h, and optimization control (”_PV-function_”).
+
+![Oekoboiler Readout](./assets/oekoboiler-overview.png)
 
 ## Typical readout
 
@@ -65,7 +71,7 @@ In terms of dependencies, you need
 
 ## Use
 
-To use it, install the dependencies (running `yarn` will do, as does `npm` if you wish) and define the following five environment variables:
+To run it, install the dependencies (running `yarn` will do, as does `npm` if you wish) and define the following five environment variables:
 
 - `OB_USER_MAIL`: your Oekoboiler E-Mail
 - `OB_USER_PASSWORD`: your Oekoboiler Password
@@ -84,6 +90,8 @@ Once you’re set-up, just run the binary from the working directory to test it:
 ```shell
 bin/oekoboiler-shelly
 ```
+
+From there, include the appropriate device in Solar Manager, namely any of those that either measure tempeerature or power, or control a device via a 1 Step ON/OFF relay, based on the Shelly 1/PM devices, depending on your needs and use cases.
 
 ## What is a heat-pump boiler, anyway?[^1]
 
