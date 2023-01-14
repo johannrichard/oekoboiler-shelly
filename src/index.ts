@@ -13,7 +13,7 @@
  * If you're unsure about the DSN, have a look at `oekoboiler-api`
  * and the example provided therein to get all your Boiler's DSNs
  */
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { Retryable, BackOffPolicy } from 'typescript-retry-decorator';
 import { CoapServer, HttpServer } from 'fake-shelly';
 import { Shelly1PM } from 'fake-shelly/devices';
 import { OekoboilerApi, OekoboilerDevice } from 'oekoboiler-api';
@@ -79,6 +79,12 @@ class OekboilerShelly extends Shelly1PM {
   }
 
   // fetch current temperature from Oekboiler API
+  @Retryable({
+    maxAttempts: 3,
+    backOffPolicy: BackOffPolicy.ExponentialBackOffPolicy,
+    backOff: 1000,
+    exponentialOption: { maxInterval: 4000, multiplier: 3 },
+  })
   private async updateCurrentTemperature() {
     await this.api.getBoiler(this.dsn).then((boiler) => {
       this.boiler = boiler;
@@ -87,6 +93,12 @@ class OekboilerShelly extends Shelly1PM {
   }
 
   // fetch current power consumption from Power Meter
+  @Retryable({
+    maxAttempts: 3,
+    backOffPolicy: BackOffPolicy.ExponentialBackOffPolicy,
+    backOff: 1000,
+    exponentialOption: { maxInterval: 4000, multiplier: 3 },
+  })
   private async updateCurrentConsumption() {
     axios.get(`${this.upstreamPowerMeter}/report`).then((result) => {
       const data = result.data!;
@@ -97,6 +109,12 @@ class OekboilerShelly extends Shelly1PM {
   }
 
   // fetch current relay status from PV relay
+  @Retryable({
+    maxAttempts: 3,
+    backOffPolicy: BackOffPolicy.ExponentialBackOffPolicy,
+    backOff: 1000,
+    exponentialOption: { maxInterval: 4000, multiplier: 3 },
+  })
   private async updateCurrentPVStatus() {
     axios.get(`${this.upstreamPVSwitch}/relay/0`).then((result) => {
       const data = result.data!;
