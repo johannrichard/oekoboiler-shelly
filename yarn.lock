@@ -4522,6 +4522,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript-retry-decorator@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "typescript-retry-decorator@npm:2.1.0"
+  checksum: ecb19fefc6ed640c243678215be18a041adf19dfcee45d196e5eeb5d4ddf69599920872a2bea345b5d9fb8d934652e76a79c91163ad5e7181c03c4aa21281b33
+  languageName: node
+  linkType: hard
+
 "typescript@npm:^4.6.4, typescript@npm:^4.9.4":
   version: 4.9.4
   resolution: "typescript@npm:4.9.4"

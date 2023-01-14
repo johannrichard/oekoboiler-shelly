@@ -9,10 +9,12 @@
  * OB_DSN: The DSN of your Oekoboiler
  * OB_MYSTROM_METER: The MyStrom Switch used as a power meter for the Oekoboiler
  * OB_SHELLY_SWITCH: The Shelly 1 used to control the Oekoboiler's PV function
+ * OB_LISTEN_IP: The IP address to bind to (will be '0.0.0.0' if undefined)
  *
  * If you're unsure about the DSN, have a look at `oekoboiler-api`
  * and the example provided therein to get all your Boiler's DSNs
  */
+import axios from 'axios';
 import { Retryable, BackOffPolicy } from 'typescript-retry-decorator';
 import { CoapServer, HttpServer } from 'fake-shelly';
 import { Shelly1PM } from 'fake-shelly/devices';
@@ -173,6 +175,7 @@ try {
   console.log('Boiler:     ', boiler.dsn);
   console.log('PowerMeter: ', boiler.upstreamPowerMeter);
   console.log('PV Switch:  ', boiler.upstreamPVSwitch);
+  console.log('Listen IP:  ', process.env.OB_LISTEN_IP || 'all ip addresses');
   console.log('------------------------------');
   console.log('');
 
@@ -189,9 +192,13 @@ try {
     });
 
   httpServer
-    .start()
+    .start(process.env.OB_LISTEN_IP)
     .then(() => {
-      console.log('HTTP server started');
+      console.log(
+        `HTTP server started on ${
+          process.env.OB_LISTEN_IP || 'all ip addresses'
+        }`,
+      );
     })
     .catch((error) => {
       console.error('Failed to start HTTP server:', error);

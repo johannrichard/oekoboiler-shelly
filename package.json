@@ -11,7 +11,7 @@
   "dependencies": {
     "axios": "^1.2.2",
     "dotenv": "^16.0.3",
-    "fake-shelly": "https://github.com/johannrichard/fake-shelly",
+    "fake-shelly": "https://github.com/johannrichard/fake-shelly#shelly1-ip-bind",
     "oekoboiler-api": "beta",
     "restify": "^10.0.0",
     "typescript-retry-decorator": "^2.1.0"

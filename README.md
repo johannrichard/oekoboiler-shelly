@@ -78,6 +78,7 @@ To run it, install the dependencies (running `yarn` will do, as does `npm` if yo
 - `OB_DSN`: The Device Serial Number (DSN) of your Oekoboiler
 - `OB_MYSTROM_METER`: The MyStrom Switch used as a power meter for the Oekoboiler
 - `OB_SHELLY_SWITCH`: The Shelly 1 used to control the Oekoboiler’s PV function
+- `OB_LISTEN_IP`: The IP address to bind to. Useful if you plan to run multiple fake shellies on the same machine with multiple IP adresses
 
 You can do so:
 
