@@ -102,12 +102,20 @@ class OekboilerShelly extends Shelly1PM {
     exponentialOption: { maxInterval: 4000, multiplier: 3 },
   })
   private async updateCurrentConsumption() {
-    axios.get(`${this.upstreamPowerMeter}/report`).then((result) => {
-      const data = result.data!;
-      if (data!.power) {
-        this.powerMeter0 = data.power;
-      }
-    });
+    axios
+      .get(`${this.upstreamPowerMeter}/report`)
+      .then((result) => {
+        const data = result.data!;
+        if (data!.power) {
+          this.powerMeter0 = data.power;
+        }
+      })
+      .catch((error) => {
+        if (error.request) {
+          // Handle error (e.g. not reachable) "gracefully"
+          console.error(`Request error: ${error.message}`);
+        }
+      });
   }
 
   // fetch current relay status from PV relay
@@ -118,10 +126,18 @@ class OekboilerShelly extends Shelly1PM {
     exponentialOption: { maxInterval: 4000, multiplier: 3 },
   })
   private async updateCurrentPVStatus() {
-    axios.get(`${this.upstreamPVSwitch}/relay/0`).then((result) => {
-      const data = result.data!;
-      this.relay0 = data.ison;
-    });
+    axios
+      .get(`${this.upstreamPVSwitch}/relay/0`)
+      .then((result) => {
+        const data = result.data!;
+        this.relay0 = data.ison;
+      })
+      .catch((error) => {
+        if (error.request) {
+          // Handle error (e.g. not reachable) "gracefully"
+          console.error(`Request error: ${error.message}`);
+        }
+      });
   }
 
   protected _getHttpSettings() {
