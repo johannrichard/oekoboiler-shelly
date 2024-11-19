@@ -111,7 +111,7 @@ I am not affiliated to Oekoboiler, MyStrom, Shelly, or Solar Manager. This proje
 - I had already used both a Shelly and a MyStrom device to partially use their information to control the Oekoboiler’s heating cycle when excess solar power was available, and
 - since the Oekoboiler uses a cloud service with a reasonably simple and [publicly documented API](https://developer.aylanetworks.com/apibrowser), I could put together a small, prototype API client to read out the current temperature.
 
-It stands on the shoulders of others, notably [alexryd/fake-shelly](alexryd/fake-shelly), [NorthernMan54/homebridge-connex](https://github.com/NorthernMan54/homebridge-connex) as well as [shawnjung/homebridge-plugin-dimplex-connex](https://github.com/shawnjung/homebridge-plugin-dimplex-connex) who all served as inspiration or provided critical piecces needed to stitch this together.
+It stands on the shoulders of others, notably [alexryd/fake-shelly](alexryd/fake-shelly), [SleepWalker/tuya-cloud-api](https://github.com/SleepWalker/tuya-cloud-api)  who provided critical piecces needed to stitch this together.
 
 You use this software at your own risk.
 
