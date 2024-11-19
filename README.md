@@ -2,7 +2,7 @@
 
 ## What is Oekoboiler Shelly, anyway?
 
-Oekoboiler Shelly is a virtual device that emulates a Shelly 1 device, but with added functionality to connect to a [Oekoboiler](https://oekoboiler.com/en/) heta pump boiler via its [cloud API](https://github.com/johannrichard/oekoboiler-api) to retrieve data about the current water temperature, and to connect to a PV relay ([Shelly 1 or Uni](https://kb.shelly.cloud/knowledge-base/shelly-uni)) which controls an Oekoboiler’s [PV Ready](https://oekoboiler.com/produkt/rs-oekob-13-300-liter/) function. This data can be used by an external system, such as a [Solar Manager](https://solarmanager.ch), to optimize your own PV power consumption.
+Oekoboiler Shelly is a virtual device that emulates a Shelly 1 device, but with added functionality to connect to a [Oekoboiler](https://oekoboiler.com/en/) heat pump boiler via its [Cloud API](https://www.npmjs.com/package/tuya-cloud-api) (Based on Tuya IoT in recent / upgraded models) to retrieve data about the current water temperature, and to connect to a PV relay ([Shelly 1 or Uni](https://kb.shelly.cloud/knowledge-base/shelly-uni)) which controls an Oekoboiler’s [PV Ready](https://oekoboiler.com/produkt/rs-oekob-13-300-liter/) function. This data can be used by an external system, such as a [Solar Manager](https://solarmanager.ch), to optimize your own PV power consumption.
 
 Oekoboiler Shelly also retrieves data about current power consumption from a [Power Meter device](https://mystrom.ch) and the current relay status from the PV relay device it controls.
 
@@ -71,14 +71,14 @@ In terms of dependencies, you need
 
 ## Use
 
-To run it, install the dependencies (running `yarn` will do, as does `npm` if you wish) and define the following five environment variables:
+To run it, download the source code, install the dependencies (running `yarn` will do, as does `npm` if you wish), build (`yarn build`) and define the following six environment variables:
 
-- `OB_USER_MAIL`: your Oekoboiler E-Mail
-- `OB_USER_PASSWORD`: your Oekoboiler Password
-- `OB_DSN`: The Device Serial Number (DSN) of your Oekoboiler
 - `OB_MYSTROM_METER`: The MyStrom Switch used as a power meter for the Oekoboiler
 - `OB_SHELLY_SWITCH`: The Shelly 1 used to control the Oekoboiler’s PV function
 - `OB_LISTEN_IP`: The IP address to bind to. Useful if you plan to run multiple fake shellies on the same machine with multiple IP adresses
+- `OB_API_CLIENT_ID`: Your Tuya API Client ID ([follow these instructions to get it](https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md#linking-a-tuya-device-with-smart-link))
+- `OB_API_CLIENT_SECRET`: Your Tuya API Client Secret (idem)
+- `OB_DEVICE_ID`: The device id of your Oekoboiler if paired with the Tuya app
 
 You can do so:
 
