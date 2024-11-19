@@ -967,7 +967,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.1.3, axios@npm:^1.7.7":
+"axios@npm:^1.7.7":
   version: 1.7.7
   resolution: "axios@npm:1.7.7"
   dependencies:
@@ -3064,13 +3064,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"luxon@npm:^3.1.0":
-  version: 3.5.0
-  resolution: "luxon@npm:3.5.0"
-  checksum: 10/48f86e6c1c96815139f8559456a3354a276ba79bcef0ae0d4f2172f7652f3ba2be2237b0e103b8ea0b79b47715354ac9fac04eb1db3485dcc72d5110491dd47f
-  languageName: node
-  linkType: hard
-
 "magic-string@npm:^0.30.11":
   version: 0.30.13
   resolution: "magic-string@npm:0.30.13"
@@ -3484,16 +3477,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oekoboiler-api@npm:beta":
-  version: 1.0.0-beta.2
-  resolution: "oekoboiler-api@npm:1.0.0-beta.2"
-  dependencies:
-    axios: "npm:^1.1.3"
-    luxon: "npm:^3.1.0"
-  checksum: 10/283a3c86a97712e0098e9e74bca42e74c2a26839da07b79b07965b802b14eae4c631661d2cf98ffda458c4271562f9666677de273d12cf71ffd1d6920b3c5681
-  languageName: node
-  linkType: hard
-
 "oekoboiler-shelly@workspace:.":
   version: 0.0.0-use.local
   resolution: "oekoboiler-shelly@workspace:."
@@ -3508,7 +3491,6 @@ __metadata:
     fake-shelly: "https://github.com/johannrichard/fake-shelly.git#commit=a6924a6e14d5bf5c41f99aa1eb4ec5a83a328092"
     husky: "npm:^8.0.3"
     lint-staged: "npm:^15.2.10"
-    oekoboiler-api: "npm:beta"
     rimraf: "npm:^6.0.1"
     tuya-cloud-api: "npm:^2.0.0"
     typescript: "npm:^5.6.3"

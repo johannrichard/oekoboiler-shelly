@@ -12,7 +12,6 @@
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "fake-shelly": "https://github.com/johannrichard/fake-shelly.git#commit=a6924a6e14d5bf5c41f99aa1eb4ec5a83a328092",
-    "oekoboiler-api": "beta",
     "tuya-cloud-api": "^2.0.0",
     "typescript-retry-decorator": "^2.4.2"
   },

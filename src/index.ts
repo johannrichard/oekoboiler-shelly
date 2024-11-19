@@ -18,22 +18,19 @@ import axios from 'axios';
 import { Retryable, BackOffPolicy } from 'typescript-retry-decorator';
 import { CoapServer, HttpServer } from 'fake-shelly';
 import { Shelly1PM } from 'fake-shelly/devices';
-import { OekoboilerApi, OekoboilerDevice } from 'oekoboiler-api';
+import { tuyaApi } from 'tuya-cloud-api';
 import 'dotenv/config';
 
 const mac = '00404F74DE83';
 const interval = 30;
 
 class OekboilerShelly extends Shelly1PM {
-  public dsn: string = process.env.OB_DSN || '';
   public upstreamPowerMeter: string = process.env.OB_MYSTROM_METER || '';
   public upstreamPVSwitch: string = process.env.OB_SHELLY_SWITCH || '';
 
-  private api = new OekoboilerApi(
-    process.env.OB_USER_MAIL || '',
-    process.env.OB_USER_PASSWORD || '',
-  );
-  private boiler: OekoboilerDevice | undefined = undefined;
+  private apiClientId: string = process.env.OB_API_CLIENT_ID || '';
+  private apiClientSecret: string = process.env.OB_API_CLIENT_SECRET || '';
+  private deviceId: string = process.env.OB_DEVICE_ID || '';
 
   constructor(id: string) {
     super(id);
@@ -88,10 +85,26 @@ class OekboilerShelly extends Shelly1PM {
     exponentialOption: { maxInterval: 4000, multiplier: 3 },
   })
   private async updateCurrentTemperature() {
-    await this.api.getBoiler(this.dsn).then((boiler) => {
-      this.boiler = boiler;
-      this.temperature = this.boiler.currentWaterTemp;
+    await tuyaApi.authorize({
+      apiClientId: this.apiClientId,
+      apiClientSecret: this.apiClientSecret,
+      // Optionally you can select which server to use
+      // serverLocation: 'eu',
     });
+    // get fresh device info
+    const deviceStatus = await tuyaApi.getDeviceStatus({
+      deviceId: this.deviceId,
+    });
+    const tempStatus = deviceStatus.find(
+      (item) => item.code === 'temp_current',
+    );
+
+    if (!tempStatus) {
+      throw new Error(`Can not find status for command: 'temp_current'`);
+    }
+
+    console.log(`Current Temperature: ${JSON.stringify(tempStatus.value)}`);
+    this.temperature = tempStatus.value;
   }
 
   // fetch current power consumption from Power Meter
@@ -158,7 +171,15 @@ class OekboilerShelly extends Shelly1PM {
   protected _getHttpStatus() {
     return {
       relays: [this._getRelay0HttpStatus()],
-      meters: [this._getPowerMeter0HttpStatus()],
+      meters: [
+        {
+          // TODO: Fake it till you make it ...
+          ...this._getPowerMeter0HttpStatus(),
+          ...{
+            timestamp: Date.now(),
+          },
+        },
+      ],
       tmp: {},
       ext_sensors: {
         temperature_unit: 'C',
