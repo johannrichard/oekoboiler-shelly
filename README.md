@@ -109,10 +109,11 @@ I am not affiliated to Oekoboiler, MyStrom, Shelly, or Solar Manager. This proje
 - Our PV plant was not yet optimized for self consumption of PV power,
 - I knew Solar Manager could work with [temperature, consumption, and the “PV function”](https://www.solarmanager.ch/anwendungen/waermepumpe/) of a heat-pump boiler ,
 - I had already used both a Shelly and a MyStrom device to partially use their information to control the Oekoboiler’s heating cycle when excess solar power was available, and
-- since the Oekoboiler uses a cloud service with a reasonably simple and [publicly documented API](https://developer.aylanetworks.com/apibrowser), I could put together a small, prototype API client to read out the current temperature.
+- Since the Oekoboiler uses Tuya as their cloud service, I could put together a small, prototype API client to read out the current temperature from the device[^2]
 
 It stands on the shoulders of others, notably [alexryd/fake-shelly](alexryd/fake-shelly), [SleepWalker/tuya-cloud-api](https://github.com/SleepWalker/tuya-cloud-api)  who provided critical piecces needed to stitch this together.
 
 You use this software at your own risk.
 
 [^1]: text written with the support of [ChatGPT](https://chat.openai.com). :space_invader: :robot:
+[^2]: The manufacturer recently replaced mainboards of cloud connected Oekoboiler's based on Ayla Networks with a Tuya based solution. I have not ywt managed to make it work as a öocal device (e.g. with [codetheweb/tuyapi](github.com/codetheweb/tuyapi)). 
